@@ -1,0 +1,30 @@
+{
+  "name": "formulary_io",
+  "version": "1.0.0",
+  "description": "An automatic formulary written in typescript with React",
+  "main": "index.js",
+  "scripts": {
+    "watch": "tsc --watch src/formulary.ts --outDir js/"
+  },
+  "author": "Holger Schmitz",
+  "license": "GPL v3.0",
+  "dependencies": {},
+  "devDependencies": {
+    "lodash": "^4.17.4",
+    "react": "^15.6.1",
+    "react-dom": "^15.6.1",
+    "react-toggle-switch": "^3.0.3",
+    "babel-cli": "^6.26.0",
+    "babel-loader": "^7.1.2",
+    "babel-plugin-lodash": "^3.2.11",
+    "babel-plugin-transform-react-jsx": "^6.24.1",
+    "babel-preset-env": "^1.6.0",
+    "babel-preset-react": "^6.24.1",
+    "babel-watch": "^2.0.7",
+    "clean-webpack-plugin": "^0.1.17",
+    "html-webpack-plugin": "^2.30.1",
+    "typescript": "^2.8.1",
+    "webpack": "^3.6.0",
+    "webpack-merge": "^4.1.0"
+  }
+}
