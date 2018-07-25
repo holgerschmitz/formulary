@@ -23,7 +23,7 @@ import ExpressionNodeVisitor from './ExpressionNodeVisitor';
  * an arbitrary number of factors that are either multiplied or divided to the product.
  *
  */
-export class MultiplicationExpressionNode extends SequenceExpressionNode
+export default class MultiplicationExpressionNode extends SequenceExpressionNode
 {
   /**
    * Constructor to create a multiplication with the first term already added.

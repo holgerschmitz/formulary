@@ -13,24 +13,28 @@
 // You should have received a copy of the GNU General Public License
 // along with Foobar.  If not, see <http://www.gnu.org/licenses/>.
 
+
+import {Expression, ExpressionNode} from './ExpressionNode';
+import ExpressionNodeVisitor from './ExpressionNodeVisitor';
+
 /**
  * An ExpressionNode that handles exponentiation. The node holds
  * a base and an exponent and calulates base^exponent
  *
  */
-public class ExponentiationExpressionNode implements ExpressionNode
+export default class ExponentiationExpressionNode implements ExpressionNode
 {
   /** the node containing the base */
-  private ExpressionNode base;
+  private base:ExpressionNode;
   /** the node containing the exponent */
-  private ExpressionNode exponent;
+  private exponent:ExpressionNode;
 
   /**
    * Construct the ExponentiationExpressionNode with base and exponent
    * @param base the node containing the base
    * @param exponent the node containing the exponent
    */
-  public ExponentiationExpressionNode(ExpressionNode base, ExpressionNode exponent)
+  constructor(base:ExpressionNode, exponent:ExpressionNode)
   {
     this.base = base;
     this.exponent = exponent;
@@ -39,9 +43,9 @@ public class ExponentiationExpressionNode implements ExpressionNode
   /**
    * Returns the type of the node, in this case ExpressionNode.EXPONENTIATION_NODE
    */
-  public int getType()
+  public getType():number
   {
-    return ExpressionNode.EXPONENTIATION_NODE;
+    return Expression.EXPONENTIATION_NODE;
   }
 
   /**
@@ -49,9 +53,9 @@ public class ExponentiationExpressionNode implements ExpressionNode
    *
    * Calculates base^exponent
    */
-  public double getValue()
+  public getValue():number
   {
-    return Math.pow(base.getValue(), exponent.getValue());
+    return Math.pow(this.base.getValue(), this.exponent.getValue());
   }
 
   /**
@@ -63,10 +67,10 @@ public class ExponentiationExpressionNode implements ExpressionNode
    * @param visitor
    *          the visitor
    */
-  public void accept(ExpressionNodeVisitor visitor)
+  public accept(visitor:ExpressionNodeVisitor):void
   {
-    visitor.visit(this);
-    base.accept(visitor);
-    exponent.accept(visitor);
+    visitor.visitExponentiationExpressionNode(this);
+    this.base.accept(visitor);
+    this.exponent.accept(visitor);
   }
 }

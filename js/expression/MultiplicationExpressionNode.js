@@ -84,4 +84,4 @@ var MultiplicationExpressionNode = /** @class */ (function (_super) {
     };
     return MultiplicationExpressionNode;
 }(SequenceExpressionNode_1["default"]));
-exports.MultiplicationExpressionNode = MultiplicationExpressionNode;
+exports["default"] = MultiplicationExpressionNode;
