@@ -13,7 +13,7 @@
 // You should have received a copy of the GNU General Public License
 // along with Foobar.  If not, see <http://www.gnu.org/licenses/>.
 
-import ExpressionNodeVisitor from './ExpressionNodeVisitor';
+import {ExpressionNodeVisitor} from './ExpressionNodeVisitor';
 
 export class Expression {
   /** Node id for variable nodes */

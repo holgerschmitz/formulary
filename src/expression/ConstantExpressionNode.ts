@@ -14,12 +14,12 @@
 // along with Foobar.  If not, see <http://www.gnu.org/licenses/>.
 
 import {Expression, ExpressionNode} from './ExpressionNode';
-import ExpressionNodeVisitor from './ExpressionNodeVisitor';
+import {ExpressionNodeVisitor} from './ExpressionNodeVisitor';
 
 /**
  * An ExpressionNode that stores a constant value
  */
-export default class ConstantExpressionNode implements ExpressionNode
+export class ConstantExpressionNode implements ExpressionNode
 {
   /** The value of the constant */
   private value:number;

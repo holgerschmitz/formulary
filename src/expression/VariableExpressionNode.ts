@@ -14,12 +14,12 @@
 // along with Foobar.  If not, see <http://www.gnu.org/licenses/>.
 
 import {Expression, ExpressionNode} from './ExpressionNode';
-import ExpressionNodeVisitor from './ExpressionNodeVisitor';
+import {ExpressionNodeVisitor} from './ExpressionNodeVisitor';
 
 /**
  * An ExpressionNode that stores a named variable
  */
-export default class VariableExpressionNode implements ExpressionNode
+export class VariableExpressionNode implements ExpressionNode
 {
   /** The name of the variable */
   private name:string;

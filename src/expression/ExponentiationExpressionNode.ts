@@ -15,14 +15,14 @@
 
 
 import {Expression, ExpressionNode} from './ExpressionNode';
-import ExpressionNodeVisitor from './ExpressionNodeVisitor';
+import {ExpressionNodeVisitor} from './ExpressionNodeVisitor';
 
 /**
  * An ExpressionNode that handles exponentiation. The node holds
  * a base and an exponent and calulates base^exponent
  *
  */
-export default class ExponentiationExpressionNode implements ExpressionNode
+export class ExponentiationExpressionNode implements ExpressionNode
 {
   /** the node containing the base */
   private base:ExpressionNode;

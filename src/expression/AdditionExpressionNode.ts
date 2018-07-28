@@ -15,15 +15,15 @@
 
 
 import {Expression, ExpressionNode} from './ExpressionNode';
-import ExpressionNodeVisitor from './ExpressionNodeVisitor';
-import SequenceExpressionNode from './SequenceExpressionNode';
+import {ExpressionNodeVisitor} from './ExpressionNodeVisitor';
+import {SequenceExpressionNode} from './SequenceExpressionNode';
 
 /**
  * An ExpressionNode that handles additions and subtractions. The node can hold
  * an arbitrary number of terms that are either added or subtraced from the sum.
  *
  */
-export default class AdditionExpressionNode extends SequenceExpressionNode
+export class AdditionExpressionNode extends SequenceExpressionNode
 {
 
   /**

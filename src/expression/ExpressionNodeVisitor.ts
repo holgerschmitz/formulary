@@ -13,10 +13,10 @@
 // You should have received a copy of the GNU General Public License
 // along with Foobar.  If not, see <http://www.gnu.org/licenses/>.
 
-import VariableExpressionNode from './VariableExpressionNode';
-import ConstantExpressionNode from './ConstantExpressionNode';
-import AdditionExpressionNode from './AdditionExpressionNode';
-import MultiplicationExpressionNode from './MultiplicationExpressionNode';
+import {VariableExpressionNode} from './VariableExpressionNode';
+import {ConstantExpressionNode} from './ConstantExpressionNode';
+import {AdditionExpressionNode} from './AdditionExpressionNode';
+import {MultiplicationExpressionNode} from './MultiplicationExpressionNode';
 /**
  * An interface for the visitor design pattern.
  *
@@ -24,7 +24,7 @@ import MultiplicationExpressionNode from './MultiplicationExpressionNode';
  * accept methods. The expression nodes, in turn, call the appropriate visit
  * method of the expression node visitor.
  */
-export default interface ExpressionNodeVisitor
+export interface ExpressionNodeVisitor
 {
   /** Visit a VariableExpressionNode */
   visitVariableExpressionNode(node:VariableExpressionNode): void;

@@ -13,9 +13,19 @@
 // You should have received a copy of the GNU General Public License
 // along with Foobar.  If not, see <http://www.gnu.org/licenses/>.
 
-import java.util.LinkedList;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
+import {Token} from './Token'
+import {FunctionExpressionNode} from './FunctionExpressionNode'
+import {ParserException} from './ParserException'
+/**
+ * Internal class holding the information about a token type.
+ */
+interface TokenInfo
+{
+  /** the regular expression to match against */
+  public readonly regex:RegExp;
+  /** the token id that the regular expression is linked to */
+  public readonly token:number;
+};
 
 /**
  * A class for reading an input string and separating it into tokens that can be
@@ -26,76 +36,55 @@ import java.util.regex.Pattern;
  * end-of-string anchors or any capturing groups as these will be added by the
  * tokenizer itslef.
  */
-public class Tokenizer
+export class Tokenizer
 {
-  /**
-   * Internal class holding the information about a token type.
-   */
-  private class TokenInfo
-  {
-    /** the regular expression to match against */
-    public final Pattern regex;
-    /** the token id that the regular expression is linked to */
-    public final int token;
-
-    /**
-     * Construct TokenInfo with its values
-     */
-    public TokenInfo(Pattern regex, int token)
-    {
-      super();
-      this.regex = regex;
-      this.token = token;
-    }
-  }
 
   /**
    * a list of TokenInfo objects
    *
    * Each token type corresponds to one entry in the list
    */
-  private LinkedList<TokenInfo> tokenInfos;
+  private tokenInfos:Array<TokenInfo>;
 
   /** the list of tokens produced when tokenizing the input */
-  private LinkedList<Token> tokens;
+  private tokens:Array<Token>;
 
   /** a tokenizer that can handle mathematical expressions */
-  private static Tokenizer expressionTokenizer = null;
+  private static expressionTokenizer:Tokenizer = null;
 
   /**
    * Default constructor
    */
-  public Tokenizer()
+  constructor()
   {
-    super();
-    tokenInfos = new LinkedList<TokenInfo>();
-    tokens = new LinkedList<Token>();
+    this.tokenInfos = [];
+    this.tokens = [];
   }
 
   /**
    * A static method that returns a tokenizer for mathematical expressions
    * @return a tokenizer that can handle mathematical expressions
    */
-  public static Tokenizer getExpressionTokenizer()
+  public static getExpressionTokenizer():Tokenizer
   {
-    if (expressionTokenizer == null)
-      expressionTokenizer = createExpressionTokenizer();
-    return expressionTokenizer;
+    if (this.expressionTokenizer == null)
+      this.expressionTokenizer = this.createExpressionTokenizer();
+    return this.expressionTokenizer;
   }
 
   /**
    * A static method that actually creates a tokenizer for mathematical expressions
    * @return a tokenizer that can handle mathematical expressions
    */
-  private static Tokenizer createExpressionTokenizer()
+  private static createExpressionTokenizer():Tokenizer
   {
-    Tokenizer tokenizer = new Tokenizer();
+    const tokenizer:Tokenizer = new Tokenizer();
 
     tokenizer.add("[+-]", Token.PLUSMINUS);
     tokenizer.add("[*/]", Token.MULTDIV);
     tokenizer.add("\\^", Token.RAISED);
 
-    String funcs = FunctionExpressionNode.getAllFunctions();
+    const funcs = FunctionExpressionNode.getAllFunctions();
     tokenizer.add("(" + funcs + ")(?!\\w)", Token.FUNCTION);
 
     tokenizer.add("\\(", Token.OPEN_BRACKET);
@@ -111,9 +100,9 @@ public class Tokenizer
    * @param regex the regular expression to match against
    * @param token the token id that the regular expression is linked to
    */
-  public void add(String regex, int token)
+  public add(regex:string, token:number):void
   {
-    tokenInfos.add(new TokenInfo(Pattern.compile("^(" + regex+")"), token));
+    this.tokenInfos.push({regex: new RegExp("^(" + regex+")"), token: token});
   }
 
   /**
@@ -123,26 +112,26 @@ public class Tokenizer
    *
    * @param str the string to tokenize
    */
-  public void tokenize(String str)
+  public tokenize(str:string):void
   {
-    String s = str.trim();
-    int totalLength = s.length();
-    tokens.clear();
-    while (!s.equals(""))
+    let s = str.trim();
+    const totalLength = s.length;
+    this.tokens = [];
+    while (s !=="")
     {
-      int remaining = s.length();
-      boolean match = false;
-      for (TokenInfo info : tokenInfos)
+      const remaining = s.length;
+      let match = false;
+      for (let info of this.tokenInfos)
       {
-        Matcher m = info.regex.matcher(s);
-        if (m.find())
+        const m = s.match(info.regex);
+        if (m !== null)
         {
           match = true;
-          String tok = m.group().trim();
+          const tok = m[0].trim();
           // System.out.println("Success matching " + s + " against " +
           // info.regex.pattern() + " : " + tok);
-          s = m.replaceFirst("").trim();
-          tokens.add(new Token(info.token, tok, totalLength - remaining));
+          s = s.replace(info.regex, "").trim();
+          this.tokens.push({token: info.token, sequence:tok, pos:totalLength - remaining});
           break;
         }
       }
@@ -155,9 +144,9 @@ public class Tokenizer
    * Get the tokens generated in the last call to tokenize.
    * @return a list of tokens to be fed to Parser
    */
-  public LinkedList<Token> getTokens()
+  public getTokens():Array<Token>
   {
-    return tokens;
+    return this.tokens;
   }
 
 }

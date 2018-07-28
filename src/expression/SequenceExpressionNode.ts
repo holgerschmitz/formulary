@@ -14,7 +14,7 @@
 // along with Foobar.  If not, see <http://www.gnu.org/licenses/>.
 
 import {Expression, ExpressionNode} from './ExpressionNode';
-import ExpressionNodeVisitor from './ExpressionNodeVisitor';
+import {ExpressionNodeVisitor} from './ExpressionNodeVisitor';
 
 /**
  * A base class for AdditionExpressionNode and MultiplicationExpressionNode.
@@ -22,7 +22,7 @@ import ExpressionNodeVisitor from './ExpressionNodeVisitor';
  * Holds an arbitrary number of ExpressionNodes together with boolean flags.
  *
  */
-export default abstract class SequenceExpressionNode implements ExpressionNode
+export abstract class SequenceExpressionNode implements ExpressionNode
 {
   /** the list of terms in the sequence */
   protected terms: {positive:boolean, expression:ExpressionNode}[];

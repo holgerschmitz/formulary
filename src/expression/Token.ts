@@ -21,46 +21,31 @@
  *
  * The token id must be one of a number of pre-defined values
  */
-public class Token
+export class Token
 {
   /** Token id for the epsilon terminal */
-  public static final int EPSILON = 0;
+  public static readonly EPSILON = 0;
   /** Token id for plus or minus */
-  public static final int PLUSMINUS = 1;
+  public static readonly PLUSMINUS = 1;
   /** Token id for multiplication or division */
-  public static final int MULTDIV = 2;
+  public static readonly MULTDIV = 2;
   /** Token id for the exponentiation symbol */
-  public static final int RAISED = 3;
+  public static readonly RAISED = 3;
   /** Token id for function names */
-  public static final int FUNCTION = 4;
+  public static readonly FUNCTION = 4;
   /** Token id for opening brackets */
-  public static final int OPEN_BRACKET = 5;
+  public static readonly OPEN_BRACKET = 5;
   /** Token id for closing brackets */
-  public static final int CLOSE_BRACKET = 6;
+  public static readonly CLOSE_BRACKET = 6;
   /** Token id for numbers */
-  public static final int NUMBER = 7;
+  public static readonly NUMBER = 7;
   /** Token id for variable names */
-  public static final int VARIABLE = 8;
+  public static readonly VARIABLE = 8;
 
   /** the token identifier */
-  public final int token;
-  /** the string that the token was created from */
-  public final String sequence;
+  public token:number;
+  /** thereadonly string that the token was created from */
+  public readonly sequence:string;
   /** the position of the token in the input string */
-  public final int pos;
-
-  /**
-   * Construct the token with its values
-   * @param token the token identifier
-   * @param sequence the string that the token was created from
-   * @param pos the position of the token in the input string
-   */
-  public Token(int token, String sequence, int pos)
-  {
-    super();
-    this.token = token;
-    this.sequence = sequence;
-    this.pos = pos;
-  }
-
+  public readonly pos:number;
 }

@@ -14,29 +14,6 @@
 // along with Foobar.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * @mainpage
- * CogPar is lightweight but versatile parser for mathematical expressions.
- *
- * It can be used to analyse expressions and store them in an internal data structure for later
- * evaluation. Repeated evaluation of the same expression using CogPar is fast.
- *
- * CogPar comes with a highly configurable tokenizer which can be adapted for your own needs.
- *
- * Arbitrary named variables are supported and values can be assigned in a single line of code.
- *
- * The parser, it's grammar an the tokenizer are well documented. You can read more about the internal
- * workings of CogPar <a href="http://cogitolearning.co.uk/?p=523" alt="CogPar tutorial">in these posts</a>.
- *
- * CogPar is distributed under the MIT license, so feel free to use it in your own projects.
- *
- * To download CogPar, <a href="" alt="Download CogPar">follow this link.</a>
- */
-
-package uk.co.cogitolearning.cogpar;
-
-import java.util.LinkedList;
-
-/**
  * A parser for mathematical expressions. The parser class defines a method
  * parse() which takes a string and returns an ExpressionNode that holds a
  * representation of the expression.

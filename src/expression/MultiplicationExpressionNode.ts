@@ -15,15 +15,15 @@
 
 
 import {Expression, ExpressionNode} from './ExpressionNode';
-import SequenceExpressionNode from './SequenceExpressionNode';
-import ExpressionNodeVisitor from './ExpressionNodeVisitor';
+import {SequenceExpressionNode} from './SequenceExpressionNode';
+import {ExpressionNodeVisitor} from './ExpressionNodeVisitor';
 
 /**
  * An ExpressionNode that handles multiplications and divisions. The node can hold
  * an arbitrary number of factors that are either multiplied or divided to the product.
  *
  */
-export default class MultiplicationExpressionNode extends SequenceExpressionNode
+export class MultiplicationExpressionNode extends SequenceExpressionNode
 {
   /**
    * Constructor to create a multiplication with the first term already added.

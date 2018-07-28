@@ -13,46 +13,28 @@
 // You should have received a copy of the GNU General Public License
 // along with Foobar.  If not, see <http://www.gnu.org/licenses/>.
 
+import {Token} from './Token'
+
 /**
  * A simple subclass of RuntimeException that indicates errors when trying to
  * parse the input to Parser.
  *
  * The exception stores the token that caused the error.
  */
-public class ParserException extends RuntimeException
+export class ParserException extends Error
 {
-  private static final long serialVersionUID = -1009747984332258423L;
-
   /** the token that caused the error */
-  private Token token = null;
-
-  /**
-   * Construct the evaluation exception with a message.
-   * @param message the message containing the cause of the exception
-   */
-  public ParserException(String message)
-  {
-    super(message);
-  }
+  private token:Token = null;
 
   /**
    * Construct the evaluation exception with a message and a token.
    * @param message the message containing the cause of the exception
    * @param token the token that caused the exception
    */
-  public ParserException(String message, Token token)
+  constructor(message:string, token?:Token)
   {
     super(message);
     this.token = token;
-  }
-
-  /**
-   * Get the token.
-   * @return the token that caused the exception
-   */
-  public Token getToken()
-  {
-    return token;
   }
 
   /**
@@ -61,12 +43,12 @@ public class ParserException extends RuntimeException
    *
    *  @return the error message
    */
-  public String getMessage()
+  public getMessage():string
   {
-    String msg = super.getMessage();
-    if (token != null)
+    let msg = this.message;
+    if (this.token != null)
     {
-      msg = msg.replace("%s", token.sequence);
+      msg = msg.replace("%s", this.token.sequence);
     }
     return msg;
   }
