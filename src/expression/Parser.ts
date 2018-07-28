@@ -13,6 +13,17 @@
 // You should have received a copy of the GNU General Public License
 // along with Foobar.  If not, see <http://www.gnu.org/licenses/>.
 
+import {Token} from './Token';
+import {Tokenizer} from './Tokenizer';
+import {Expression, ExpressionNode} from './ExpressionNode';
+import {ConstantExpressionNode} from './ConstantExpressionNode';
+import {VariableExpressionNode} from './VariableExpressionNode';
+import {AdditionExpressionNode} from './AdditionExpressionNode';
+import {MultiplicationExpressionNode} from './MultiplicationExpressionNode';
+import {ExponentiationExpressionNode} from './ExponentiationExpressionNode';
+import {FunctionExpressionNode} from './FunctionExpressionNode';
+
+import {ParserException} from './ParserException';
 /**
  * A parser for mathematical expressions. The parser class defines a method
  * parse() which takes a string and returns an ExpressionNode that holds a
@@ -21,12 +32,13 @@
  * Parsing is implemented in the form of a recursive descent parser.
  *
  */
-public class Parser
+export class Parser
 {
   /** the tokens to parse */
-  LinkedList<Token> tokens;
+  private tokens:Array<Token>;
+
   /** the next token */
-  Token lookahead;
+  private lookahead:Token;
 
   /**
    * Parse a mathematical expression in a string and return an ExpressionNode.
@@ -40,12 +52,12 @@ public class Parser
    * @return the internal representation of the expression in form of an
    *         expression tree made out of ExpressionNode objects
    */
-  public ExpressionNode parse(String expression)
+  public parse(expression:string):ExpressionNode
   {
-    Tokenizer tokenizer = Tokenizer.getExpressionTokenizer();
+    const tokenizer = Tokenizer.getExpressionTokenizer();
     tokenizer.tokenize(expression);
-    LinkedList<Token> tokens = tokenizer.getTokens();
-    return this.parse(tokens);
+    const tokens = tokenizer.getTokens();
+    return this.parseTokens(tokens);
   }
 
   /**
@@ -57,52 +69,52 @@ public class Parser
    * @return the internal representation of the expression in form of an
    *         expression tree made out of ExpressionNode objects
    */
-  public ExpressionNode parse(LinkedList<Token> tokens)
+  public parseTokens(tokens:Array<Token>):ExpressionNode
   {
     // implementing a recursive descent parser
-    this.tokens = (LinkedList<Token>) tokens.clone();
-    lookahead = this.tokens.getFirst();
+    this.tokens = Array.from(tokens);
+    this.lookahead = this.tokens[0];
 
     // top level non-terminal is expression
-    ExpressionNode expr = expression();
+    const expr = this.expression();
 
-    if (lookahead.token != Token.EPSILON)
-      throw new ParserException("Unexpected symbol %s found", lookahead);
+    if (this.lookahead.token !== Token.EPSILON)
+      throw new ParserException("Unexpected symbol %s found", this.lookahead);
 
     return expr;
   }
 
   /** handles the non-terminal expression */
-  private ExpressionNode expression()
+  private expression():ExpressionNode
   {
     // only one rule
     // expression -> signed_term sum_op
-    ExpressionNode expr = signedTerm();
-    expr = sumOp(expr);
+    let expr = this.signedTerm();
+    expr = this.sumOp(expr);
     return expr;
   }
 
   /** handles the non-terminal sum_op */
-  private ExpressionNode sumOp(ExpressionNode expr)
+  private sumOp(expr:ExpressionNode):ExpressionNode
   {
     // sum_op -> PLUSMINUS term sum_op
-    if (lookahead.token == Token.PLUSMINUS)
+    if (this.lookahead.token == Token.PLUSMINUS)
     {
-      AdditionExpressionNode sum;
+      let sum:AdditionExpressionNode;
       // This means we are actually dealing with a sum
       // If expr is not already a sum, we have to create one
-      if (expr.getType() == ExpressionNode.ADDITION_NODE)
-        sum = (AdditionExpressionNode) expr;
+      if (expr.getType() == Expression.ADDITION_NODE)
+        sum = expr as AdditionExpressionNode;
       else
         sum = new AdditionExpressionNode(expr, true);
 
       // reduce the input and recursively call sum_op
-      boolean positive = lookahead.sequence.equals("+");
-      nextToken();
-      ExpressionNode t = term();
+      const positive = (this.lookahead.sequence === "+");
+      this.nextToken();
+      const t = this.term();
       sum.add(t, positive);
 
-      return sumOp(sum);
+      return this.sumOp(sum);
     }
 
     // sum_op -> EPSILON
@@ -110,14 +122,14 @@ public class Parser
   }
 
   /** handles the non-terminal signed_term */
-  private ExpressionNode signedTerm()
+  private signedTerm():ExpressionNode
   {
     // signed_term -> PLUSMINUS term
-    if (lookahead.token == Token.PLUSMINUS)
+    if (this.lookahead.token == Token.PLUSMINUS)
     {
-      boolean positive = lookahead.sequence.equals("+");
-      nextToken();
-      ExpressionNode t = term();
+      const positive = (this.lookahead.sequence === "+");
+      this.nextToken();
+      const t = this.term();
       if (positive)
         return t;
       else
@@ -125,39 +137,39 @@ public class Parser
     }
 
     // signed_term -> term
-    return term();
+    return this.term();
   }
 
   /** handles the non-terminal term */
-  private ExpressionNode term()
+  private term():ExpressionNode
   {
     // term -> factor term_op
-    ExpressionNode f = factor();
-    return termOp(f);
+    const f = this.factor();
+    return this.termOp(f);
   }
 
   /** handles the non-terminal term_op */
-  private ExpressionNode termOp(ExpressionNode expression)
+  private termOp(expression:ExpressionNode):ExpressionNode
   {
     // term_op -> MULTDIV factor term_op
-    if (lookahead.token == Token.MULTDIV)
+    if (this.lookahead.token == Token.MULTDIV)
     {
-      MultiplicationExpressionNode prod;
+      let prod:MultiplicationExpressionNode;
 
       // This means we are actually dealing with a product
       // If expr is not already a PRODUCT, we have to create one
-      if (expression.getType() == ExpressionNode.MULTIPLICATION_NODE)
-        prod = (MultiplicationExpressionNode) expression;
+      if (expression.getType() == Expression.MULTIPLICATION_NODE)
+        prod = expression as MultiplicationExpressionNode;
       else
         prod = new MultiplicationExpressionNode(expression, true);
 
       // reduce the input and recursively call sum_op
-      boolean positive = lookahead.sequence.equals("*");
-      nextToken();
-      ExpressionNode f = signedFactor();
+      const positive = (this.lookahead.sequence === "*");
+      this.nextToken();
+      const f = this.signedFactor();
       prod.add(f, positive);
 
-      return termOp(prod);
+      return this.termOp(prod);
     }
 
     // term_op -> EPSILON
@@ -165,14 +177,14 @@ public class Parser
   }
 
  /** handles the non-terminal signed_factor */
-  private ExpressionNode signedFactor()
+  private signedFactor():ExpressionNode
   {
     // signed_factor -> PLUSMINUS factor
-    if (lookahead.token == Token.PLUSMINUS)
+    if (this.lookahead.token == Token.PLUSMINUS)
     {
-      boolean positive = lookahead.sequence.equals("+");
-      nextToken();
-      ExpressionNode t = factor();
+      const positive = (this.lookahead.sequence === "+");
+      this.nextToken();
+      const t = this.factor();
       if (positive)
         return t;
       else
@@ -180,27 +192,25 @@ public class Parser
     }
 
     // signed_factor -> factor
-    return factor();
+    return this.factor();
   }
 
   /** handles the non-terminal factor */
-  private ExpressionNode factor()
+  private factor():ExpressionNode
   {
     // factor -> argument factor_op
-    ExpressionNode a = argument();
-    return factorOp(a);
+    const a = this.argument();
+    return this.factorOp(a);
   }
 
-
-
   /** handles the non-terminal factor_op */
-  private ExpressionNode factorOp(ExpressionNode expr)
+  private factorOp(expr:ExpressionNode):ExpressionNode
   {
     // factor_op -> RAISED expression
-    if (lookahead.token == Token.RAISED)
+    if (this.lookahead.token == Token.RAISED)
     {
-      nextToken();
-      ExpressionNode exponent = signedFactor();
+      this.nextToken();
+      const exponent = this.signedFactor();
 
       return new ExponentiationExpressionNode(expr, exponent);
     }
@@ -210,66 +220,70 @@ public class Parser
   }
 
   /** handles the non-terminal argument */
-  private ExpressionNode argument()
+  private argument():ExpressionNode
   {
     // argument -> FUNCTION argument
-    if (lookahead.token == Token.FUNCTION)
+    if (this.lookahead.token == Token.FUNCTION)
     {
-      int function = FunctionExpressionNode.stringToFunction(lookahead.sequence);
-      nextToken();
-      ExpressionNode expr = argument();
-      return new FunctionExpressionNode(function, expr);
+      const func = FunctionExpressionNode.stringToFunction(this.lookahead.sequence);
+      this.nextToken();
+      const expr = this.argument();
+      return new FunctionExpressionNode(func, expr);
     }
     // argument -> OPEN_BRACKET sum CLOSE_BRACKET
-    else if (lookahead.token == Token.OPEN_BRACKET)
+    else if (this.lookahead.token == Token.OPEN_BRACKET)
     {
-      nextToken();
-      ExpressionNode expr = expression();
-      if (lookahead.token != Token.CLOSE_BRACKET)
-        throw new ParserException("Closing brackets expected", lookahead);
-      nextToken();
+      this.nextToken();
+      const expr = this.expression();
+      if (this.peek() != Token.CLOSE_BRACKET)
+        throw new ParserException("Closing brackets expected", this.lookahead);
+      this.nextToken();
       return expr;
     }
 
     // argument -> value
-    return value();
+    return this.value();
   }
 
   /** handles the non-terminal value */
-  private ExpressionNode value()
+  private value():ExpressionNode
   {
     // argument -> NUMBER
-    if (lookahead.token == Token.NUMBER)
+    if (this.lookahead.token == Token.NUMBER)
     {
-      ExpressionNode expr = new ConstantExpressionNode(lookahead.sequence);
-      nextToken();
+      const expr = new ConstantExpressionNode(parseFloat(this.lookahead.sequence));
+      this.nextToken();
       return expr;
     }
 
     // argument -> VARIABLE
-    if (lookahead.token == Token.VARIABLE)
+    if (this.lookahead.token == Token.VARIABLE)
     {
-      ExpressionNode expr = new VariableExpressionNode(lookahead.sequence);
-      nextToken();
+      const expr = new VariableExpressionNode(this.lookahead.sequence);
+      this.nextToken();
       return expr;
     }
 
-    if (lookahead.token == Token.EPSILON)
+    if (this.lookahead.token == Token.EPSILON)
       throw new ParserException("Unexpected end of input");
     else
-      throw new ParserException("Unexpected symbol %s found", lookahead);
+      throw new ParserException("Unexpected symbol %s found", this.lookahead);
   }
 
   /**
    * Remove the first token from the list and store the next token in lookahead
    */
-  private void nextToken()
+  private nextToken():void
   {
-    tokens.pop();
+    this.tokens.pop();
     // at the end of input we return an epsilon token
-    if (tokens.isEmpty())
-      lookahead = new Token(Token.EPSILON, "", -1);
+    if (this.tokens.length == 0)
+      this.lookahead = {token:Token.EPSILON, sequence:"", pos:-1};
     else
-      lookahead = tokens.getFirst();
+      this.lookahead = this.tokens[0];
+  }
+
+  private peek():number {
+    return this.lookahead.token;
   }
 }

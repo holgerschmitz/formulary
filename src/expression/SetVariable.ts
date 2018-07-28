@@ -13,14 +13,22 @@
 // You should have received a copy of the GNU General Public License
 // along with Foobar.  If not, see <http://www.gnu.org/licenses/>.
 
+import {ExpressionNodeVisitor} from './ExpressionNodeVisitor';
+import {VariableExpressionNode} from './VariableExpressionNode';
+import {ConstantExpressionNode} from './ConstantExpressionNode';
+import {AdditionExpressionNode} from './AdditionExpressionNode';
+import {MultiplicationExpressionNode} from './MultiplicationExpressionNode';
+import {ExponentiationExpressionNode} from './ExponentiationExpressionNode';
+import {FunctionExpressionNode} from './FunctionExpressionNode';
+
 /**
  * A visitor that sets a variable with a specific name to a given value
  */
-public class SetVariable implements ExpressionNodeVisitor
+export class SetVariable implements ExpressionNodeVisitor
 {
 
-  private String name;
-  private double value;
+  private name:string;
+  private value:number;
 
   /**
    * Construct the visitor with the name and the value of the variable to set
@@ -30,9 +38,8 @@ public class SetVariable implements ExpressionNodeVisitor
    * @param value
    *          the value of the variable
    */
-  public SetVariable(String name, double value)
+  constructor(name:string, value:number)
   {
-    super();
     this.name = name;
     this.value = value;
   }
@@ -41,30 +48,30 @@ public class SetVariable implements ExpressionNodeVisitor
    * Checks the nodes name against the name to set and sets the value if the two
    * strings match
    */
-  public void visit(VariableExpressionNode node)
+  public visitVariableExpressionNode(node:VariableExpressionNode): void
   {
-    if (node.getName().equals(name))
-      node.setValue(value);
+    if (node.getName() === this.name)
+      node.setValue(this.value);
   }
 
   /** Do nothing */
-  public void visit(ConstantExpressionNode node)
+  public visitConstantExpressionNode(node:ConstantExpressionNode): void
   {}
 
   /** Do nothing */
-  public void visit(AdditionExpressionNode node)
+  public visitAdditionExpressionNode(node:AdditionExpressionNode): void
   {}
 
   /** Do nothing */
-  public void visit(MultiplicationExpressionNode node)
+  public visitMultiplicationExpressionNode(node:MultiplicationExpressionNode): void
   {}
 
   /** Do nothing */
-  public void visit(ExponentiationExpressionNode node)
+  public visitExponentiationExpressionNode(node:ExponentiationExpressionNode): void
   {}
 
   /** Do nothing */
-  public void visit(FunctionExpressionNode node)
+  public visitFunctionExpressionNode(node:FunctionExpressionNode): void
   {}
 
 }

@@ -17,6 +17,8 @@ import {VariableExpressionNode} from './VariableExpressionNode';
 import {ConstantExpressionNode} from './ConstantExpressionNode';
 import {AdditionExpressionNode} from './AdditionExpressionNode';
 import {MultiplicationExpressionNode} from './MultiplicationExpressionNode';
+import {ExponentiationExpressionNode} from './ExponentiationExpressionNode';
+import {FunctionExpressionNode} from './FunctionExpressionNode';
 /**
  * An interface for the visitor design pattern.
  *
