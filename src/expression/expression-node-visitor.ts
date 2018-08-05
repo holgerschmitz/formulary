@@ -13,8 +13,8 @@
 // You should have received a copy of the GNU General Public License
 // along with Foobar.  If not, see <http://www.gnu.org/licenses/>.
 
-import {VariableExpressionNode} from './VariableExpressionNode';
-import {ConstantExpressionNode} from './ConstantExpressionNode';
+import {VariableExpressionNode} from './variable-expression-node';
+import {ConstantExpressionNode} from './constant-expression-node';
 import {AdditionExpressionNode} from './AdditionExpressionNode';
 import {MultiplicationExpressionNode} from './MultiplicationExpressionNode';
 import {ExponentiationExpressionNode} from './ExponentiationExpressionNode';
