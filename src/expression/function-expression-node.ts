@@ -13,10 +13,10 @@
 // You should have received a copy of the GNU General Public License
 // along with Foobar.  If not, see <http://www.gnu.org/licenses/>.
 
-import {ExpressionNode, Expression} from './ExpressionNode'
-import {ExpressionNodeVisitor} from './ExpressionNodeVisitor'
-import {ParserException} from './ParserException'
-import {EvaluationException} from './EvaluationException'
+import {ExpressionNode, Expression} from './expression-node'
+import {ExpressionNodeVisitor} from './expression-node-visitor'
+import {ParserException} from './parser-exception'
+import {EvaluationException} from './evaluation-exception'
 
 /**
  * An ExpressionNode that handles mathematical functions.

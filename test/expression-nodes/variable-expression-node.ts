@@ -35,6 +35,6 @@ describe('VariableExpressionNode', () => {
 
   it("must throw an error when unassigned", () => {
     const variableExpressionNode = new VariableExpressionNode(name);
-    expect(variableExpressionNode.getValue.bind(variableExpressionNode)).to.throw(new EvaluationException('Error: Variable \''+name+'\' was not initialized.'));
+    expect(variableExpressionNode.getValue.bind(variableExpressionNode)).to.throw();
   });
 });

@@ -14,9 +14,9 @@
 // along with Foobar.  If not, see <http://www.gnu.org/licenses/>.
 
 
-import {Expression, ExpressionNode} from './ExpressionNode';
-import {ExpressionNodeVisitor} from './ExpressionNodeVisitor';
-import {SequenceExpressionNode} from './SequenceExpressionNode';
+import {Expression, ExpressionNode} from './expression-node';
+import {ExpressionNodeVisitor} from './expression-node-visitor';
+import {SequenceExpressionNode} from './sequence-expression-node';
 
 /**
  * An ExpressionNode that handles additions and subtractions. The node can hold
