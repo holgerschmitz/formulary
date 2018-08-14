@@ -15,10 +15,10 @@
 
 import {VariableExpressionNode} from './variable-expression-node';
 import {ConstantExpressionNode} from './constant-expression-node';
-import {AdditionExpressionNode} from './AdditionExpressionNode';
-import {MultiplicationExpressionNode} from './MultiplicationExpressionNode';
+import {AdditionExpressionNode} from './addition-expression-node';
+import {MultiplicationExpressionNode} from './multiplication-expression-node';
 import {ExponentiationExpressionNode} from './exponentiation-expression-node';
-import {FunctionExpressionNode} from './FunctionExpressionNode';
+import {FunctionExpressionNode} from './function-expression-node';
 /**
  * An interface for the visitor design pattern.
  *

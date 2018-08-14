@@ -25,7 +25,7 @@ import {ExpressionNodeVisitor} from './expression-node-visitor';
 export abstract class SequenceExpressionNode implements ExpressionNode
 {
   /** the list of terms in the sequence */
-  protected terms: {positive:boolean, expression:ExpressionNode}[];
+  protected terms: {positive:boolean, expression:ExpressionNode}[] = [];
 
 
   /**
