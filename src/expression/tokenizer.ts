@@ -13,18 +13,18 @@
 // You should have received a copy of the GNU General Public License
 // along with Foobar.  If not, see <http://www.gnu.org/licenses/>.
 
-import {Token} from './Token'
-import {FunctionExpressionNode} from './FunctionExpressionNode'
-import {ParserException} from './ParserException'
+import {Token} from './token'
+import {FunctionExpressionNode} from './function-expression-node'
+import {ParserException} from './parser-exception'
 /**
  * Internal class holding the information about a token type.
  */
 interface TokenInfo
 {
   /** the regular expression to match against */
-  public readonly regex:RegExp;
+  readonly regex:RegExp;
   /** the token id that the regular expression is linked to */
-  public readonly token:number;
+  readonly token:number;
 };
 
 /**

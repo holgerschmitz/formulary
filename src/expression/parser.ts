@@ -13,17 +13,18 @@
 // You should have received a copy of the GNU General Public License
 // along with Foobar.  If not, see <http://www.gnu.org/licenses/>.
 
-import {Token} from './Token';
-import {Tokenizer} from './Tokenizer';
-import {Expression, ExpressionNode} from './ExpressionNode';
-import {ConstantExpressionNode} from './ConstantExpressionNode';
-import {VariableExpressionNode} from './VariableExpressionNode';
-import {AdditionExpressionNode} from './AdditionExpressionNode';
-import {MultiplicationExpressionNode} from './MultiplicationExpressionNode';
-import {ExponentiationExpressionNode} from './ExponentiationExpressionNode';
-import {FunctionExpressionNode} from './FunctionExpressionNode';
+import {Token} from './token';
+import {Tokenizer} from './tokenizer';
+import {Expression, ExpressionNode} from './expression-node';
+import {ConstantExpressionNode} from './constant-expression-node';
+import {VariableExpressionNode} from './variable-expression-node';
+import {AdditionExpressionNode} from './addition-expression-node';
+import {MultiplicationExpressionNode} from './multiplication-expression-node';
+import {ExponentiationExpressionNode} from './exponentiation-expression-node';
+import {FunctionExpressionNode} from './function-expression-node';
 
-import {ParserException} from './ParserException';
+import {ParserException} from './parser-exception';
+
 /**
  * A parser for mathematical expressions. The parser class defines a method
  * parse() which takes a string and returns an ExpressionNode that holds a
@@ -78,10 +79,19 @@ export class Parser
     // top level non-terminal is expression
     const expr = this.expression();
 
+    this.diagnose(expr, "parseTokens");
+
     if (this.lookahead.token !== Token.EPSILON)
-      throw new ParserException("Unexpected symbol %s found", this.lookahead);
+      throw new ParserException(`Unexpected symbol ${this.lookahead.sequence} found at position ${this.lookahead.pos}`);
 
     return expr;
+  }
+
+  private diagnose(expr:ExpressionNode, domain:String) {
+    return;
+    // console.info(domain);
+    // console.info("    result = "+JSON.stringify(expr));
+    // console.info("    lookahead = "+JSON.stringify(this.lookahead));
   }
 
   /** handles the non-terminal expression */
@@ -90,7 +100,10 @@ export class Parser
     // only one rule
     // expression -> signed_term sum_op
     let expr = this.signedTerm();
+    this.diagnose(expr, "expression() A");
+
     expr = this.sumOp(expr);
+    this.diagnose(expr, "expression() B");
     return expr;
   }
 
@@ -117,6 +130,7 @@ export class Parser
       return this.sumOp(sum);
     }
 
+    this.diagnose(expr, "sumOp()");
     // sum_op -> EPSILON
     return expr;
   }
@@ -136,8 +150,10 @@ export class Parser
         return new AdditionExpressionNode(t, false);
     }
 
+    const expr = this.term();
+    this.diagnose(expr, "signedTerm()");
     // signed_term -> term
-    return this.term();
+    return expr;
   }
 
   /** handles the non-terminal term */
@@ -145,7 +161,10 @@ export class Parser
   {
     // term -> factor term_op
     const f = this.factor();
-    return this.termOp(f);
+    this.diagnose(f, "term() f");
+    const expr = this.termOp(f);
+    this.diagnose(expr, "term() expr");
+    return expr;
   }
 
   /** handles the non-terminal term_op */
@@ -275,7 +294,7 @@ export class Parser
    */
   private nextToken():void
   {
-    this.tokens.pop();
+    this.tokens.shift();
     // at the end of input we return an epsilon token
     if (this.tokens.length == 0)
       this.lookahead = {token:Token.EPSILON, sequence:"", pos:-1};

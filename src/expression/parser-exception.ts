@@ -13,7 +13,7 @@
 // You should have received a copy of the GNU General Public License
 // along with Foobar.  If not, see <http://www.gnu.org/licenses/>.
 
-import {Token} from './Token'
+import {Token} from './token'
 
 /**
  * A simple subclass of RuntimeException that indicates errors when trying to
