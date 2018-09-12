@@ -1,1 +1,1 @@
-import * as formulary from "./expression/ExpressionNode";
+import * as formulary from "./expression/expression-node";

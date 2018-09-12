@@ -19,6 +19,7 @@ import {AdditionExpressionNode} from './addition-expression-node';
 import {MultiplicationExpressionNode} from './multiplication-expression-node';
 import {ExponentiationExpressionNode} from './exponentiation-expression-node';
 import {FunctionExpressionNode} from './function-expression-node';
+
 /**
  * An interface for the visitor design pattern.
  *
@@ -46,4 +47,24 @@ export interface ExpressionNodeVisitor
   /**  Visit a FunctionExpressionNode */
   visitFunctionExpressionNode(node:FunctionExpressionNode): void;
 
+}
+
+/**
+ * An implementation of ExpressionNodeVisitor that does nothing
+ *
+ * Override individual methods to perform actions on selected node types
+ */
+export class ExpressionNodeVisitorImpl implements ExpressionNodeVisitor {
+	/** Visit a VariableExpressionNode */
+	visitVariableExpressionNode(node: VariableExpressionNode): void {}
+	/**  Visit a ConstantExpressionNode */
+	visitConstantExpressionNode(node: ConstantExpressionNode): void {}
+	/**  Visit a AdditionExpressionNode */
+	visitAdditionExpressionNode(node: AdditionExpressionNode): void {}
+	/**  Visit a MultiplicationExpressionNode */
+	visitMultiplicationExpressionNode(node: MultiplicationExpressionNode): void {}
+	/**  Visit a ExponentiationExpressionNode */
+	visitExponentiationExpressionNode(node: ExponentiationExpressionNode): void {}
+	/**  Visit a FunctionExpressionNode */
+	visitFunctionExpressionNode(node: FunctionExpressionNode): void {}
 }
